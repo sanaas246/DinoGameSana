@@ -44,12 +44,29 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((25,25))
         self.surf.fill((150,200,255))
         self.rect = self.surf.get_rect()
+        print(self.rect.x, self.rect.y)
+
+        self.isjumping = True
+        self.isfalling = False
+
+    def gravity(self):
+        if self.rect.top != 550:
+            self.rect.y += 1
+
+    def jump(self):
+        self.isjumping = True
+
+        if self.isjumping is True:
+            self.rect.move_ip(0,-2)
+            pygame.time.wait(300)
+            self.rect.move_ip(0,2)
+            self.isjumping = False
+
 
     def update(self, pressed_keys):
+        self.gravity()
         if pressed_keys[K_UP]:
-            isjump = True
-            self.rect.move_ip(0, -2) # Working on jump fucntion
-            
+            self.jump()
         if pressed_keys[K_DOWN]:
             self.rect.move_ip(0, 2)
         if pressed_keys[K_LEFT]:
@@ -65,7 +82,8 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.rect.top = 0
         if self.rect.bottom >= 550:
-            self.rect.bottom = 550        
+            self.rect.bottom = 550  
+            dy = 0      
 
 pygame.init()
 
@@ -91,7 +109,10 @@ while running:
 
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
 
-    screen.blit(player.surf, player.rect)
+    x = player.surf
+    y = player.rect
+
+    screen.blit(x,y)
 
     pygame.display.flip()
 
