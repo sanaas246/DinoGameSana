@@ -35,7 +35,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = 1
 
     def update(self):
-        self.rect.move_ip(-self.speed, 0) # work on enemy speed and then collision detection
+        self.rect.x += self.speed # work on enemy speed and then collision detection
         if self.rect.right < 0:
             self.kill()
         if self.rect.left == 0:
