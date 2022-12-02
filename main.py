@@ -31,19 +31,15 @@ class Enemy(pygame.sprite.Sprite):
         self.w = 50
         self.h = 100
         self.color = (255, 255, 255)
-        # self.surf = pygame.Surface((50, random.randint(100, 400)))
-        # self.surf.fill((255, 255, 255))
-        # self.rect = self.surf.get_rect(self.x, self.y, self.w, self.y)
         self.speed = -0.05
 
     def update(self):
-        # self.rect.move_ip(-1, 0) # work on enemy speed and then collision detection
         self.x += self.speed
         
         if self.x <= 0:
             self.kill()
     
-    def draw(self):
+    def draw(self): # draw multiple rects
         print(self.x)
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
@@ -122,12 +118,10 @@ while running:
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
 
-    # enemies.update()
+    # enemies update
     for enemy in enemies:
         enemy.update()
     
-
-    x1 += -0.05
 
     # Fill the screen with black
     screen.fill((70,70,70)) 
@@ -139,6 +133,7 @@ while running:
 
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
 
+    # print the enemy 
     for enemy in enemies:
         enemy.draw()
 
