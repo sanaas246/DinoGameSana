@@ -21,25 +21,31 @@ isjump = False
 v = 5
 m = 1
 
+x1 = 800
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.Surface((50, random.randint(100, 400)))
-        self.surf.fill((255, 255, 255))
-        self.rect = self.surf.get_rect(
-            center=(
-                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
-                550,
-            )
-        )
-        self.speed = 1
+        self.x = 800
+        self.y = 450
+        self.w = 50
+        self.h = 100
+        self.color = (255, 255, 255)
+        # self.surf = pygame.Surface((50, random.randint(100, 400)))
+        # self.surf.fill((255, 255, 255))
+        # self.rect = self.surf.get_rect(self.x, self.y, self.w, self.y)
+        self.speed = -0.05
 
     def update(self):
-        self.rect.x += self.speed # work on enemy speed and then collision detection
-        if self.rect.right < 0:
+        # self.rect.move_ip(-1, 0) # work on enemy speed and then collision detection
+        self.x += self.speed
+        
+        if self.x <= 0:
             self.kill()
-        if self.rect.left == 0:
-            self.kill()    
+    
+    def draw(self):
+        print(self.x)
+        pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -87,13 +93,15 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY, 250)
+# pygame.time.set_timer(ADDENEMY, 250)
 
 player = Player()
 enemies = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
+new_enemy = Enemy()
+enemies.add(new_enemy)
 
 running = True
 
@@ -114,7 +122,12 @@ while running:
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
 
-    enemies.update()
+    # enemies.update()
+    for enemy in enemies:
+        enemy.update()
+    
+
+    x1 += -0.05
 
     # Fill the screen with black
     screen.fill((70,70,70)) 
@@ -123,6 +136,11 @@ while running:
         screen.blit(entity.surf, entity.rect)
 
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
+
+    pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
+
+    for enemy in enemies:
+        enemy.draw()
 
     x = player.surf
     y = player.rect
