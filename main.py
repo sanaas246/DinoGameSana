@@ -32,10 +32,10 @@ class Enemy(pygame.sprite.Sprite):
                 550,
             )
         )
-        self.speed = 0.1
+        self.speed = 1
 
     def update(self):
-        self.rect.move_ip(-1, 0) # work on enemy speed and then collision detection
+        self.rect.move_ip(-self.speed, 0) # work on enemy speed and then collision detection
         if self.rect.right < 0:
             self.kill()
         if self.rect.left == 0:
