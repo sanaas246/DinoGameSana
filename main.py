@@ -35,13 +35,24 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         self.x += self.speed
-        
         if self.x <= 0:
             self.kill()
     
     def draw(self): # draw multiple rects
-        print(self.x)
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
+        # print(self.x)
+        if self.x <= 50:
+            self.x = 800
+            self.y = 450
+            self.w = 50
+            self.h = 100
+            self.color = (255, 255, 255)
+            if self.speed <= -1:
+                self.speed = -0.05
+            else:
+                self.speed -= random.randrange(0, 1)
+            print(self.speed)
+            pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
