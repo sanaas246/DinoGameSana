@@ -50,7 +50,8 @@ class Enemy(pygame.sprite.Sprite):
             if self.speed <= -1:
                 self.speed = -0.05
             else:
-                self.speed -= random.randrange(0, 1)
+                self.speed -= 0.1
+                # print("hi") WORK ON THE RANDOM SPEED
             print(self.speed)
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
