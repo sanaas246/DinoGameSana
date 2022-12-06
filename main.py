@@ -17,10 +17,8 @@ from pygame.locals import (
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+# Variables
 isjump = False
-v = 5
-m = 1
-
 x1 = 800
 
 class Enemy(pygame.sprite.Sprite):
@@ -40,7 +38,6 @@ class Enemy(pygame.sprite.Sprite):
     
     def draw(self): # draw multiple rects
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
-        # print(self.x)
         if self.x <= 50:
             self.x = 800
             self.y = random.randint(100, 450)
@@ -50,8 +47,6 @@ class Enemy(pygame.sprite.Sprite):
             self.speed -= random.uniform(0,1)
             if self.speed <= -0.8:
                 self.speed = -0.05
-            else:
-                pass
             print(self.speed)
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
@@ -149,10 +144,18 @@ while running:
     for enemy in enemies:
         enemy.draw()
 
+    if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
+        enemy.kill()
+        print("You lose")
+
+
+
     x = player.surf
     y = player.rect
 
     screen.blit(x,y)
+
+
 
     pygame.display.flip()
 
