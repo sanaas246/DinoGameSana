@@ -145,7 +145,8 @@ while running:
         enemy.draw()
 
     if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
-        enemy.kill()
+        screen.fill((0,0,0))
+        enemy.speed = 0
         print("You lose")
 
 
@@ -159,3 +160,4 @@ while running:
 
     pygame.display.flip()
 
+#  add a score num  : everytime an enemy kills itself to change the speed, increase the score num
