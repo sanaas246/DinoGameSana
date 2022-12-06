@@ -30,7 +30,7 @@ class Enemy(pygame.sprite.Sprite):
         self.y = 450
         self.w = 50
         self.h = 100
-        self.color = (255, 255, 255)
+        self.color = (100, 100, 100)
         self.speed = -0.05
 
     def update(self):
@@ -43,15 +43,15 @@ class Enemy(pygame.sprite.Sprite):
         # print(self.x)
         if self.x <= 50:
             self.x = 800
-            self.y = 450
+            self.y = random.randint(100, 450)
             self.w = 50
-            self.h = 100
-            self.color = (255, 255, 255)
-            if self.speed <= -1:
+            self.h = 300
+            self.color = (100, 100, 100)
+            self.speed -= random.uniform(0,1)
+            if self.speed <= -0.8:
                 self.speed = -0.05
             else:
-                self.speed -= 0.1
-                # print("hi") WORK ON THE RANDOM SPEED
+                pass
             print(self.speed)
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
