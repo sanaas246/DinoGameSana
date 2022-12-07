@@ -106,6 +106,7 @@ all_sprites.add(player)
 new_enemy = Enemy()
 enemies.add(new_enemy)
 
+loss = False
 running = True
 
 while running: 
@@ -144,12 +145,17 @@ while running:
     for enemy in enemies:
         enemy.draw()
 
+
     if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
+        enemy.speed = 0 # fix this , get rid of player?
+        loss = True
+        
+    if loss == True:
         screen.fill((0,0,0))
-        enemy.speed = 0
-        print("You lose")
-
-
+        # enemy.y = player.rect.y
+        # enemy.x = player.rect.x
+        for enemy in enemies:
+            enemy.kill()
 
     x = player.surf
     y = player.rect
