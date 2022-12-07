@@ -20,6 +20,11 @@ SCREEN_HEIGHT = 600
 # Variables
 isjump = False
 x1 = 800
+loss = False
+running = True
+white = (255,255,255)
+red = (255,51,51)
+pink = (255,204,229)
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -54,7 +59,11 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
         self.surf = pygame.Surface((25,25))
-        self.surf.fill((150,200,255))
+        if loss == True:
+            self.surf.fill((0,0,0))
+            print("loss")
+        else:
+            self.surf.fill((150,200,255))
         self.rect = self.surf.get_rect()
         print(self.rect.x, self.rect.y)
 
@@ -106,8 +115,15 @@ all_sprites.add(player)
 new_enemy = Enemy()
 enemies.add(new_enemy)
 
-loss = False
-running = True
+
+
+
+# YOU LOST sign
+pygame.display.set_caption('Show Text')
+font = pygame.font.Font('freesansbold.ttf', 32)
+text = font.render('YOU LOST', True, red, pink)
+textRect = text.get_rect()
+textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
 while running: 
     for event in pygame.event.get():
@@ -141,21 +157,23 @@ while running:
 
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
 
+
     # print the enemy 
     for enemy in enemies:
         enemy.draw()
 
 
     if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
-        enemy.speed = 0 # fix this , get rid of player?
+        enemy.speed = 0
         loss = True
         
     if loss == True:
         screen.fill((0,0,0))
-        # enemy.y = player.rect.y
-        # enemy.x = player.rect.x
         for enemy in enemies:
             enemy.kill()
+        screen.blit(text,textRect)
+        player.kill()
+        
 
     x = player.surf
     y = player.rect
