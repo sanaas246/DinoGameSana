@@ -1,5 +1,6 @@
 # Dino Game by Sana S
 
+# All imports
 import pygame
 import random 
 
@@ -14,6 +15,7 @@ from pygame.locals import (
     QUIT,
 )
 
+# Screen Measures
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -26,6 +28,7 @@ white = (255,255,255)
 red = (255,51,51)
 pink = (255,204,229)
 
+# Enemy Group
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
@@ -55,6 +58,7 @@ class Enemy(pygame.sprite.Sprite):
             print(self.speed)
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
 
+# Player Sprite
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
@@ -98,25 +102,20 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom >= 550:
             self.rect.bottom = 550  
-            dy = 0      
-
+            
+# Initializing screen and pygame
 pygame.init()
-
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 ADDENEMY = pygame.USEREVENT + 1
-# pygame.time.set_timer(ADDENEMY, 250)
 
+# Adding Sprites to a Group
 player = Player()
 enemies = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
-
 new_enemy = Enemy()
 enemies.add(new_enemy)
-
-
-
 
 # YOU LOST sign
 pygame.display.set_caption('Show Text')
@@ -125,8 +124,10 @@ text = font.render('YOU LOST', True, red, pink)
 textRect = text.get_rect()
 textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
+# Loop to run screen
 while running: 
     for event in pygame.event.get():
+        # How to quit 
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
@@ -153,16 +154,16 @@ while running:
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
 
+    # the ground
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
-
+    # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
-
 
     # print the enemy 
     for enemy in enemies:
         enemy.draw()
 
-
+    # collision detection
     if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
         enemy.speed = 0
         loss = True
@@ -172,7 +173,7 @@ while running:
         for enemy in enemies:
             enemy.kill()
         screen.blit(text,textRect)
-        player.kill()
+        player.kill() # get rid of player 
         
 
     x = player.surf
