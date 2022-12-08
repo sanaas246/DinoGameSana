@@ -24,7 +24,7 @@ isjump = False
 x1 = 800
 loss = False
 running = True
-white = (255,255,255)
+green = (0,245,50)
 red = (255,51,51)
 pink = (255,204,229)
 score = 0
@@ -42,13 +42,13 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         self.x += self.speed
-        if self.x <= 0:
-            score += 1
+        if self.x == 10:
             self.kill()
+            score += 1 #  the score updating FIX
     
     def draw(self): # draw multiple rects
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
-        if self.x <= 50:
+        if self.x <= 10:
             self.x = 800
             self.y = random.randint(100, 450)
             self.w = 50
@@ -119,6 +119,16 @@ all_sprites.add(player)
 new_enemy = Enemy()
 enemies.add(new_enemy)
 
+# YOU LOST sign
+pygame.display.set_caption('Show Text')
+font = pygame.font.Font('freesansbold.ttf', 32)
+text1 = font.render("YOU LOST", True, red)
+text2 = font.render(f"Score: {score}", True, green)
+text1Rect = text1.get_rect()
+text1Rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+text2Rect = text2.get_rect()
+text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
+# https://pygame-zero.readthedocs.io/en/stable/ptext.html
 
 
 # Loop to run screen
@@ -169,17 +179,9 @@ while running:
         screen.fill((0,0,0))
         for enemy in enemies:
             enemy.kill()
-        screen.blit(text,textRect)
-        screen.draw.text("YOU LOST\nYour")#FIX w link
+        screen.blit(text1,text1Rect)
+        screen.blit(text2,text2Rect)
         player.kill() # get rid of player FIX
-
-        # YOU LOST sign
-pygame.display.set_caption('Show Text')
-font = pygame.font.Font('freesansbold.ttf', 32)
-text = font.render("YOU LOST\nScore:", True, red, pink)
-textRect = text.get_rect()
-textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-# https://pygame-zero.readthedocs.io/en/stable/ptext.html
 
     x = player.surf
     y = player.rect
