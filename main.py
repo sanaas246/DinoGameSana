@@ -65,11 +65,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
         self.surf = pygame.Surface((25,25))
-        if loss == True:
-            self.surf.fill((0,0,0))
-            print("loss")
-        else:
-            self.surf.fill((150,200,255))
+        self.surf.fill((150,200,255))
         self.rect = self.surf.get_rect()
         print(self.rect.x, self.rect.y)
 
@@ -181,7 +177,7 @@ while running:
             enemy.kill()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
-        player.kill() # get rid of player FIX
+        player.color(0,0,0) # get rid of player FIX
 
     x = player.surf
     y = player.rect
