@@ -177,7 +177,7 @@ while running:
             enemy.kill()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
-        player.color(0,0,0) # get rid of player FIX
+        player.kill() # get rid of player FIX
 
     x = player.surf
     y = player.rect
