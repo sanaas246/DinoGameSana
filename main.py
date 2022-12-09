@@ -44,8 +44,10 @@ class Enemy(pygame.sprite.Sprite):
         self.x += self.speed
         if self.x == 10:
             self.kill()
-            score += 1 #  the score updating FIX
-    
+            self.score += 1
+            return 1
+        return 0
+
     def draw(self): # draw multiple rects
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
         if self.x <= 10:
@@ -59,6 +61,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.speed = -0.05
             print(self.speed)
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
+
 
 # Player Sprite
 class Player(pygame.sprite.Sprite):
@@ -91,7 +94,7 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[K_RIGHT]:
             self.rect.move_ip(1, 0)
 
-            # Keep player on the screen
+        # Keep player on the screen
         if self.rect.left < 0:
             self.rect.left = 0
         if self.rect.right > SCREEN_WIDTH:
@@ -116,16 +119,14 @@ new_enemy = Enemy()
 enemies.add(new_enemy)
 
 # YOU LOST sign
-pygame.display.set_caption('Show Text')
+# pygame.display.set_caption('Show Text')
 font = pygame.font.Font('freesansbold.ttf', 32)
 text1 = font.render("YOU LOST", True, red)
-text2 = font.render(f"Score: {score}", True, green)
+text2 = font.render(f"Score: {score}", True, green) 
 text1Rect = text1.get_rect()
 text1Rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 text2Rect = text2.get_rect()
 text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
-# https://pygame-zero.readthedocs.io/en/stable/ptext.html
-
 
 # Loop to run screen
 while running: 
@@ -148,29 +149,25 @@ while running:
 
     # enemies update
     for enemy in enemies:
+        score += enemy.update()
         enemy.update()
-    
-
-    # Fill the screen with black
-    screen.fill((70,70,70)) 
-
-    for entity in all_sprites:
-        screen.blit(entity.surf, entity.rect)
-
-    # the ground
-    pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
-    # the enemy
-    pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
-
-    # print the enemy 
-    for enemy in enemies:
-        enemy.draw()
 
     # collision detection
     if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
         enemy.speed = 0
-        loss = True
-        
+        loss = True  
+
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
+
+    # DRAWING
+    # Fill the screen with black
+    screen.fill((70,70,70)) 
+
+    # the ground
+    pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
+
+    # the ending screen
     if loss == True:
         screen.fill((0,0,0))
         for enemy in enemies:
@@ -179,13 +176,19 @@ while running:
         screen.blit(text2,text2Rect)
         player.kill() # get rid of player FIX
 
-    x = player.surf
-    y = player.rect
+    # the enemy
+    pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
 
-    screen.blit(x,y)
+    # print the enemy 
+    for enemy in enemies:
+        enemy.draw()
+
+    screen.blit(player.surf,player.rect)
 
 
+    pygame.display.set_caption(str(score))
 
+    # Load everything
     pygame.display.flip()
 
 #  add a score num  : everytime an enemy kills itself to change the speed, increase the score num
