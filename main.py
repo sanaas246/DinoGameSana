@@ -169,6 +169,7 @@ while running:
 
     # the ending screen
     if loss == True:
+        screen.clear()
         screen.fill((0,0,0))
         for enemy in enemies:
             enemy.kill()
