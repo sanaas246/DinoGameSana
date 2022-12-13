@@ -29,6 +29,7 @@ red = (255,51,51)
 pink = (255,204,229)
 score = 0
 
+# SPRITES
 # Enemy Group
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -39,6 +40,7 @@ class Enemy(pygame.sprite.Sprite):
         self.h = 100
         self.color = (100, 100, 100)
         self.speed = -0.05
+        self.score = 0
 
     def update(self):
         self.x += self.speed
@@ -60,8 +62,8 @@ class Enemy(pygame.sprite.Sprite):
             if self.speed <= -0.8:
                 self.speed = -0.05
             print(self.speed)
+            self.score = 0
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
-
 
 # Player Sprite
 class Player(pygame.sprite.Sprite):
@@ -103,11 +105,11 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom >= 550:
             self.rect.bottom = 550  
-            
+
+    
 # Initializing screen and pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
 ADDENEMY = pygame.USEREVENT + 1
 
 # Adding Sprites to a Group
@@ -118,15 +120,9 @@ all_sprites.add(player)
 new_enemy = Enemy()
 enemies.add(new_enemy)
 
-# YOU LOST sign
-# pygame.display.set_caption('Show Text')
 font = pygame.font.Font('freesansbold.ttf', 32)
-text1 = font.render("YOU LOST", True, red)
-text2 = font.render(f"Score: {score}", True, green) 
-text1Rect = text1.get_rect()
-text1Rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-text2Rect = text2.get_rect()
-text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
+
+
 
 # Loop to run screen
 while running: 
@@ -144,13 +140,25 @@ while running:
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
 
+    # enemies update
+    for enemy in enemies:
+        enemy.update()
+        # score += enemy.update()
+        
+
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
 
-    # enemies update
-    for enemy in enemies:
-        score += enemy.update()
-        enemy.update()
+    # End Game Screen
+    text1 = font.render("YOU LOST", True, red)
+    text1Rect = text1.get_rect()
+    text1Rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+    text2 = font.render(f"Score: {score}", True, green) 
+    text2Rect = text2.get_rect()
+    text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
+
+    pygame.display.set_caption(str(score))
 
     # collision detection
     if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
@@ -169,7 +177,7 @@ while running:
 
     # the ending screen
     if loss == True:
-        screen.clear()
+        player.kill()
         screen.fill((0,0,0))
         for enemy in enemies:
             enemy.kill()
@@ -184,10 +192,10 @@ while running:
     for enemy in enemies:
         enemy.draw()
 
-    screen.blit(player.surf,player.rect)
+    if loss == False:
+        screen.blit(player.surf,player.rect)
 
 
-    pygame.display.set_caption(str(score))
 
     # Load everything
     pygame.display.flip()
