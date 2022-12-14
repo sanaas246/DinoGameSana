@@ -34,7 +34,7 @@ highscore = [ ]
 # HighScore File (Score)
 file = open("users.txt", "r")
 user_from_file = file.read()
-file.close()
+file.close() # FIX JSON HIGHSCORE SAVING FUNCTION 
 
 userscores = json.loads(user_from_file)
 
@@ -190,7 +190,7 @@ while running:
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
         highscore.append(score)
-        
+
         users_json = json.dumps(userscores)
         file = open("users.txt", "w")
         file.write(users_json)
