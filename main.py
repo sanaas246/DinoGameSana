@@ -2,7 +2,8 @@
 
 # All imports
 import pygame
-import random 
+import random
+import json 
 
 from pygame.locals import (
     K_UP,
@@ -28,7 +29,14 @@ green = (0,245,50)
 red = (255,51,51)
 pink = (255,204,229)
 score = 0
-font = pygame.font.Font('freesansbold.ttf', 32)
+highscore = [ ]
+
+# HighScore File (Score)
+file = open("users.txt", "r")
+user_from_file = file.read()
+file.close()
+
+userscores = json.loads(user_from_file)
 
 # SPRITES
 # Enemy Group
@@ -111,6 +119,8 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 ADDENEMY = pygame.USEREVENT + 1
 
+font = pygame.font.Font('freesansbold.ttf', 32)
+
 # Adding Sprites to a Group
 player = Player()
 enemies = pygame.sprite.Group()
@@ -179,6 +189,12 @@ while running:
             enemy.kill()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
+        highscore.append(score)
+        
+        users_json = json.dumps(userscores)
+        file = open("users.txt", "w")
+        file.write(users_json)
+        file.close()
 
     # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
