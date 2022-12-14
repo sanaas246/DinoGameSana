@@ -143,7 +143,7 @@ while running:
     # enemies update
     for enemy in enemies:
         enemy.update()
-        # score += enemy.update()
+        # score += enemy.update() FIX THE SCORE VARIABLE
         
 
     pressed_keys = pygame.key.get_pressed()
@@ -183,7 +183,6 @@ while running:
             enemy.kill()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
-        
 
     # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
