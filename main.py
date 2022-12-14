@@ -28,6 +28,7 @@ green = (0,245,50)
 red = (255,51,51)
 pink = (255,204,229)
 score = 0
+font = pygame.font.Font('freesansbold.ttf', 32)
 
 # SPRITES
 # Enemy Group
@@ -118,10 +119,6 @@ all_sprites.add(player)
 new_enemy = Enemy()
 enemies.add(new_enemy)
 
-font = pygame.font.Font('freesansbold.ttf', 32)
-
-
-
 # Loop to run screen
 while running: 
     for event in pygame.event.get():
@@ -144,8 +141,21 @@ while running:
         if enemy.x <= 10:
             score+= 1
 
+    # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
+
+    # Collision Detection
+    if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
+        enemy.speed = 0
+        loss = True  
+
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
+
+    # DRAWING
+    # Fill the screen with black
+    screen.fill((70,70,70)) 
 
     # End Game Screen
     text1 = font.render("YOU LOST", True, red)
@@ -157,18 +167,6 @@ while running:
     text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
 
     pygame.display.set_caption(str(score))
-
-    # collision detection
-    if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
-        enemy.speed = 0
-        loss = True  
-
-    for entity in all_sprites:
-        screen.blit(entity.surf, entity.rect)
-
-    # DRAWING
-    # Fill the screen with black
-    screen.fill((70,70,70)) 
 
     # the ground
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
@@ -197,4 +195,3 @@ while running:
     # Load everything
     pygame.display.flip()
 
-#  add a score num  : everytime an enemy kills itself to change the speed, increase the score num
