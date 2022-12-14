@@ -183,7 +183,7 @@ while running:
             enemy.kill()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
-        player.kill() # get rid of player FIX
+        
 
     # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
