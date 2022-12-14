@@ -40,13 +40,11 @@ class Enemy(pygame.sprite.Sprite):
         self.h = 100
         self.color = (100, 100, 100)
         self.speed = -0.05
-        self.score = 0
 
     def update(self):
         self.x += self.speed
         if self.x == 10:
             self.kill()
-            self.score += 1
             return 1
         return 0
 
@@ -143,8 +141,8 @@ while running:
     # enemies update
     for enemy in enemies:
         enemy.update()
-        # score += enemy.update() FIX THE SCORE VARIABLE
-        
+        if enemy.x <= 10:
+            score+= 1
 
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
