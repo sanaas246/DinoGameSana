@@ -29,7 +29,7 @@ green = (0,245,50)
 red = (255,51,51)
 pink = (255,204,229)
 score = 0
-highscore = [ ]
+highscore = [0]
 
 # HighScore File (Score)
 file = open("users.txt", "r")
@@ -37,7 +37,7 @@ user_from_file = file.read()
 file.close() # FIX JSON HIGHSCORE SAVING FUNCTION 
 
 userscores = json.loads(user_from_file)
-
+userscores.append(0)
 # SPRITES
 # Enemy Group
 class Enemy(pygame.sprite.Sprite):
@@ -167,6 +167,8 @@ while running:
     # Fill the screen with black
     screen.fill((70,70,70)) 
 
+
+
     # End Game Screen
     text1 = font.render("YOU LOST", True, red)
     text1Rect = text1.get_rect()
@@ -176,10 +178,21 @@ while running:
     text2Rect = text2.get_rect()
     text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
 
+    # text3 = font.render(f"High Score: {userscores[0]}", True, pink) 
+    # text3Rect = text3.get_rect()
+    # text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+100)
+
     pygame.display.set_caption(str(score))
 
     # the ground
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
+
+    # Add the highscore to json
+    def addhs():
+        users_json = json.dumps(userscores)
+        file = open("users.txt", "w")
+        file.write(users_json)
+        file.close()
 
     # the ending screen
     if loss == True:
@@ -187,14 +200,25 @@ while running:
         screen.fill((0,0,0))
         for enemy in enemies:
             enemy.kill()
+    
+
+        if score > highscore[0]:
+            del(highscore[0])
+            highscore.append(score)
+
+        userscores.append(highscore)
+
+        addhs()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
-        highscore.append(score)
+            
+        text3 = font.render(f"High Score: {userscores[0]}", True, pink) 
+        text3Rect = text3.get_rect()
+        text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+100)
+        screen.blit(text3,text3Rect)
+        # If the score is greater than the last userscores, add it to the list
 
-        users_json = json.dumps(userscores)
-        file = open("users.txt", "w")
-        file.write(users_json)
-        file.close()
+
 
     # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
