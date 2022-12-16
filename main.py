@@ -145,6 +145,8 @@ while running:
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
 
+
+
     # enemies update
     for enemy in enemies:
         enemy.update()
@@ -170,11 +172,11 @@ while running:
     # End Game Screen
     text1 = font.render("YOU LOST", True, red)
     text1Rect = text1.get_rect()
-    text1Rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    text1Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2) - 50)
 
     text2 = font.render(f"Score: {score}", True, green) 
     text2Rect = text2.get_rect()
-    text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+50)
+    text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2))
 
     pygame.display.set_caption(str(score))
 
@@ -206,8 +208,14 @@ while running:
         # print the highscore to the screen    
         text3 = font.render(f"High Score: {userscores[0]}", True, pink) 
         text3Rect = text3.get_rect()
-        text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+100)
+        text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
         screen.blit(text3,text3Rect)
+
+        text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
+        text4Rect = text4.get_rect()
+        text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
+        screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
+
 
     # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
