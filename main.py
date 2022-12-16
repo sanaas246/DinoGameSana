@@ -48,7 +48,7 @@ class Enemy(pygame.sprite.Sprite):
         self.w = 50
         self.h = 100
         self.color = (100, 100, 100)
-        self.speed = -0.05
+        self.speed = -0.06
 
     def update(self):
         self.x += self.speed
@@ -211,10 +211,10 @@ while running:
         text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
         screen.blit(text3,text3Rect)
 
-        text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
-        text4Rect = text4.get_rect()
-        text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
-        screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
+        # text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
+        # text4Rect = text4.get_rect()
+        # text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
+        # screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
 
     # the enemy
@@ -223,7 +223,6 @@ while running:
     # print the enemy 
     for enemy in enemies:
         enemy.draw()
-
     if loss == False:
         screen.blit(player.surf,player.rect)
 
