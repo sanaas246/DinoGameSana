@@ -223,6 +223,7 @@ while running:
     # print the enemy 
     for enemy in enemies:
         enemy.draw()
+        
     if loss == False:
         screen.blit(player.surf,player.rect)
 
