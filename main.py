@@ -30,8 +30,7 @@ score = 0
 # HighScore File (Score)
 file = open("users.txt", "r")
 user_from_file = file.read()
-file.close() # FIX JSON HIGHSCORE SAVING FUNCTION 
-
+file.close() 
 userscores = json.loads(user_from_file)
 
 # SPRITES
@@ -108,12 +107,13 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom >= 550:
             self.rect.bottom = 550  
 
-    
+  
 # Initializing screen and pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 ADDENEMY = pygame.USEREVENT + 1
 
+# PyGame Variables
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 # Adding Sprites to a Group
@@ -127,11 +127,11 @@ enemies.add(new_enemy)
 # Loop to run screen
 while running: 
     for event in pygame.event.get():
-        # How to quit 
+        # quit 
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
-
+            # restart
             if event.key == pygame.K_r:
                 isjump = False
                 x1 = 800
@@ -141,7 +141,7 @@ while running:
                 player.rect.y = 500
                 new_enemy = Enemy()
                 enemies.add(new_enemy)
-        
+        # quit 
         elif event.type == QUIT:
             running = False
 
