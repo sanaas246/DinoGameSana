@@ -25,9 +25,6 @@ isjump = False
 x1 = 800
 loss = False
 running = True
-green = (0,245,50)
-red = (255,51,51)
-pink = (255,204,229)
 score = 0
 
 
@@ -79,7 +76,6 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((25,25))
         self.surf.fill((150,200,255))
         self.rect = self.surf.get_rect()
-        print(self.rect.x, self.rect.y)
 
     def gravity(self):
         if self.rect.top != 550:
@@ -136,16 +132,26 @@ while running:
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
+
+            if event.key == pygame.K_r:
+                isjump = False
+                x1 = 800
+                loss = False
+                score = 0
+                player.rect.x = 50
+                player.rect.y = 500
+                new_enemy = Enemy()
+                enemies.add(new_enemy)
+        
         elif event.type == QUIT:
             running = False
 
         elif event.type == ADDENEMY:
-            # Create the new enemy and add it to sprite groups
-            new_enemy = Enemy()
-            enemies.add(new_enemy)
-            all_sprites.add(new_enemy)
-
-
+            if loss == False:
+                # Create the new enemy and add it to sprite groups
+                new_enemy = Enemy()
+                enemies.add(new_enemy)
+                all_sprites.add(new_enemy)
 
     # enemies update
     for enemy in enemies:
@@ -170,11 +176,11 @@ while running:
     screen.fill((70,70,70)) 
 
     # End Game Screen
-    text1 = font.render("YOU LOST", True, red)
+    text1 = font.render("YOU LOST", True, (255,51,51))
     text1Rect = text1.get_rect()
     text1Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2) - 50)
 
-    text2 = font.render(f"Score: {score}", True, green) 
+    text2 = font.render(f"Score: {score}", True, (0,245,50)) 
     text2Rect = text2.get_rect()
     text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2))
 
@@ -206,15 +212,15 @@ while running:
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
         # print the highscore to the screen    
-        text3 = font.render(f"High Score: {userscores[0]}", True, pink) 
+        text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
         text3Rect = text3.get_rect()
         text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
         screen.blit(text3,text3Rect)
 
-        # text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
-        # text4Rect = text4.get_rect()
-        # text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
-        # screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
+        text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
+        text4Rect = text4.get_rect()
+        text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
+        screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
 
     # the enemy
