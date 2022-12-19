@@ -1,4 +1,4 @@
-# Dino Game by Sana S
+# Dodging Game by Sana S
 
 # All imports
 import pygame
@@ -26,7 +26,6 @@ x1 = 800
 loss = False
 running = True
 score = 0
-
 
 # HighScore File (Score)
 file = open("users.txt", "r")
@@ -196,6 +195,7 @@ while running:
         file.write(users_json)
         file.close()
 
+    # USER LOSES
     # the ending screen
     if loss == True:
         player.kill()
@@ -222,10 +222,8 @@ while running:
         text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
         screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
-
     # the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
-
     # print the enemy 
     for enemy in enemies:
         enemy.draw()
