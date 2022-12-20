@@ -65,7 +65,6 @@ class Enemy(pygame.sprite.Sprite):
                 if score == 1:
                     print("score hit 2")
                     Enemy()
-                    Enemy()
                 self.speed = -0.05
         
                 #  add more enemies 
