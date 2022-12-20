@@ -58,14 +58,21 @@ class Enemy(pygame.sprite.Sprite):
             self.x = 800
             self.y = random.randint(100, 450)
             self.w = 50
-            self.h = 300
+            self.h = 250
             self.color = (100, 100, 100)
             self.speed -= random.uniform(0,1)
             if self.speed <= -0.8:
+                if score == 1:
+                    print("score hit 2")
+                    Enemy()
+                    Enemy()
                 self.speed = -0.05
+        
+                #  add more enemies 
             print(self.speed)
-            self.score = 0
+            # self.score = 0
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
+            
 
 # Player Sprite
 class Player(pygame.sprite.Sprite):
@@ -121,8 +128,8 @@ player = Player()
 enemies = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
-new_enemy = Enemy()
-enemies.add(new_enemy)
+enemies.add(Enemy())
+
 
 # Loop to run screen
 while running: 
@@ -164,7 +171,7 @@ while running:
     player.update(pressed_keys)
 
     # Collision Detection
-    if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 300 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
+    if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 250 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
         enemy.speed = 0
         loss = True  
 
@@ -228,6 +235,7 @@ while running:
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
     for enemy in enemies:
         enemy.draw()
+
         
     # draw the player if the game is still running
     if loss == False:
