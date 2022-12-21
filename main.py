@@ -65,8 +65,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.speed = -0.05
                 if score == 1:
                     print("score hit 2")
-                    enemies.add(Enemy())
-                #  add more enemies 
+                    enemies.add(Enemy()) 
             print(self.speed)
             # self.score = 0
             pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
@@ -242,3 +241,6 @@ while running:
     # Load everything
     pygame.display.flip()
 
+# second enemies don't always show up
+# second enemy collision not working 
+# collision detection not always working 
