@@ -47,7 +47,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         self.x += self.speed
-        if self.x == 10:
+        if self.x == 1:
             self.kill()
             return 1
         return 0
@@ -62,11 +62,10 @@ class Enemy(pygame.sprite.Sprite):
             self.color = (100, 100, 100)
             self.speed -= random.uniform(0,1)
             if self.speed <= -0.8:
+                self.speed = -0.05
                 if score == 1:
                     print("score hit 2")
-                    Enemy()
-                self.speed = -0.05
-        
+                    enemies.add(Enemy())
                 #  add more enemies 
             print(self.speed)
             # self.score = 0
