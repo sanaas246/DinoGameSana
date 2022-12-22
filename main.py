@@ -65,13 +65,14 @@ class Enemy(pygame.sprite.Sprite):
         print(self.speed)
 
     def scoring(self):
-        if self.x == 1:
+        if self.x <= 0: # doesn't work
             score += 1
 
-    def collision(self, xval, yval):
+    def collision(self, xval, yval): # doesn't work
         # Collision Detection
-        if yval >= self.y and yval + 25 <= self.y and xval >= self.x and xval <= self.x + 50:
+        if yval >= self.y and yval + 25 <= self.y and xval >= self.x and xval + 25 <= self.x:
             enemy.speed = 0
+            print("loss")
             loss = True 
 
             
@@ -164,9 +165,10 @@ while running:
 
     # enemies update
     for enemy in enemies:
-        enemy.collision(player.rect.x, player.rect.y)
-        enemy.scoring()
         enemy.update()
+        enemy.collision(player.rect.x, player.rect.y)
+        enemy.scoring() # enemy not working entirely 
+
 
 
         # # Collision Detection
