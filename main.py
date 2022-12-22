@@ -47,28 +47,33 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         self.x += self.speed
-        if self.x == -50:
-            self.kill()
-            return 1
-        return 0
-
+        if self.x <= -50:
+            self.teleport()
+        
     def draw(self): # draw multiple rects
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
-        if self.x <= 10:
-            self.x = 800
-            self.y = random.randint(100, 450)
-            self.w = 50
-            self.h = 250
-            self.color = (100, 100, 100)
-            self.speed -= random.uniform(0,1)
-            if self.speed <= -0.8:
-                self.speed = -0.05
-                if score == 1:
-                    print("score hit 2")
-                    enemies.add(Enemy()) 
-            print(self.speed)
-            # self.score = 0
-            pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
+        
+    def teleport(self):
+        self.x = 800
+        self.y = random.randint(100, 450)
+        self.speed -= random.uniform(0,1)
+        if self.speed <= -0.8:
+            self.speed = -0.05
+            if score == 1:
+                print("score hit 2")
+                # enemies.add(Enemy()) 
+        print(self.speed)
+
+    def scoring(self):
+        if self.x == 1:
+            score += 1
+
+    def collision(self, xval, yval):
+        # Collision Detection
+        if yval >= self.y and yval + 25 <= self.y and xval >= self.x and xval <= self.x + 50:
+            enemy.speed = 0
+            loss = True 
+
             
 
 # Player Sprite
@@ -159,18 +164,23 @@ while running:
 
     # enemies update
     for enemy in enemies:
+        enemy.collision(player.rect.x, player.rect.y)
+        enemy.scoring()
         enemy.update()
-        if enemy.x <= 0:
-            score+= 1
+
+
+        # # Collision Detection
+        # if player.rect.y >= enemy.y and player.rect.y + 25 <= enemy.y and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
+        #     enemy.speed = 0
+        #     loss = True 
+
+
 
     # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
 
-    # Collision Detection
-    if player.rect.y >= enemy.y and player.rect.y <= enemy.y + 250 and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
-        enemy.speed = 0
-        loss = True  
+     
 
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
