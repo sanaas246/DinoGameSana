@@ -160,7 +160,7 @@ while running:
     # enemies update
     for enemy in enemies:
         enemy.update()
-        if enemy.x <= 10:
+        if enemy.x <= -50:
             score+= 1
 
     # Pressing keys to move player
