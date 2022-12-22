@@ -47,7 +47,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         self.x += self.speed
-        if self.x == 1:
+        if self.x == -50:
             self.kill()
             return 1
         return 0
@@ -160,7 +160,7 @@ while running:
     # enemies update
     for enemy in enemies:
         enemy.update()
-        if enemy.x <= -50:
+        if enemy.x <= 0:
             score+= 1
 
     # Pressing keys to move player
