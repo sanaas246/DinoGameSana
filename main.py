@@ -44,6 +44,7 @@ class Enemy(pygame.sprite.Sprite):
         self.h = 100
         self.color = (100, 100, 100)
         self.speed = -0.06
+        self.score = 0
 
     def update(self):
         self.x += self.speed
@@ -59,14 +60,14 @@ class Enemy(pygame.sprite.Sprite):
         self.speed -= random.uniform(0,1)
         if self.speed <= -0.8:
             self.speed = -0.05
-            if score == 1:
+            if self.score == 1:
                 print("score hit 2")
                 # enemies.add(Enemy()) 
         print(self.speed)
-
-    def scoring(self):
-        if self.x <= 0: # doesn't work
-            score += 1
+        if self.x != 1: # speed never adds up to 1
+            print("scoring works")
+            self.score += 1
+            print(self.score)
 
     def collision(self, xval, yval): # doesn't work
         # Collision Detection
@@ -147,7 +148,8 @@ while running:
                 isjump = False
                 x1 = 800
                 loss = False
-                score = 0
+                for enemy in enemies:
+                    enemy.score = 0
                 player.rect.x = 50
                 player.rect.y = 500
                 new_enemy = Enemy()
@@ -167,14 +169,13 @@ while running:
     for enemy in enemies:
         enemy.update()
         enemy.collision(player.rect.x, player.rect.y)
-        enemy.scoring() # enemy not working entirely 
 
 
 
-        # # Collision Detection
-        # if player.rect.y >= enemy.y and player.rect.y + 25 <= enemy.y and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
-        #     enemy.speed = 0
-        #     loss = True 
+    # Collision Detection
+    if player.rect.y >= enemy.y and player.rect.y + 25 <= enemy.y and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
+        enemy.speed = 0
+        loss = True 
 
 
 
@@ -196,11 +197,12 @@ while running:
     text1Rect = text1.get_rect()
     text1Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2) - 50)
 
-    text2 = font.render(f"Score: {score}", True, (0,245,50)) 
-    text2Rect = text2.get_rect()
-    text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2))
+    for enemy in enemies:
+        text2 = font.render(f"Score: {enemy.score}", True, (0,245,50)) 
+        text2Rect = text2.get_rect()
+        text2Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2))
 
-    pygame.display.set_caption(str(score))
+        pygame.display.set_caption(str(enemy.score))
 
     # the ground
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
@@ -221,10 +223,11 @@ while running:
             enemy.kill()
     
         # add the new highscore to the userscores json list 
-        if score > userscores[0]:
-            del(userscores[0])
-            userscores.append(score)
-        # save the userscores file
+        for enemy in enemies:    
+            if enemy.score > userscores[0]:
+                del(userscores[0])
+                userscores.append(enemy.score)
+            # save the userscores file
         addhs()
         screen.blit(text1,text1Rect)
         screen.blit(text2,text2Rect)
