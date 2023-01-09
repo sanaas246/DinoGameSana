@@ -33,7 +33,48 @@ user_from_file = file.read()
 file.close() 
 userscores = json.loads(user_from_file)
 
-# SPRITES
+# SPRITES   
+# Player Sprite
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Player, self).__init__()
+        self.surf = pygame.Surface((25,25))
+        self.surf.fill((150,200,255))
+        self.rect = self.surf.get_rect()
+
+    def gravity(self):
+        if self.rect.top != 550:
+            self.rect.y += 1
+
+    def jump(self):
+        dy = -3
+        accel = 1
+        dy += accel
+        self.isjumping = True
+        if self.isjumping == True:
+            self.rect.y += dy
+            self.isjumping = False
+
+    def update(self, pressed_keys):
+        self.gravity()
+        if pressed_keys[K_UP] or pressed_keys[K_SPACE]:
+            self.jump()
+        if pressed_keys[K_LEFT]:
+            self.rect.move_ip(-1, 0)
+        if pressed_keys[K_RIGHT]:
+            self.rect.move_ip(1, 0)
+
+
+        # Keep player on the screen
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+        if self.rect.top <= 0:
+            self.rect.top = 0
+        if self.rect.bottom >= 550:
+            self.rect.bottom = 550  
+
 # Enemy Group
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -71,54 +112,13 @@ class Enemy(pygame.sprite.Sprite):
 
     def collision(self, xval, yval): # doesn't work
         # Collision Detection
-        if yval >= self.y and yval + 25 <= self.y and xval >= self.x and xval + 25 <= self.x:
+        if yval >= self.y and yval <= self.y + 100 and xval >= self.x and xval <= self.x + 50:
             enemy.speed = 0
             print("loss")
+            self.kill()     
             loss = True 
 
-            
 
-# Player Sprite
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Player, self).__init__()
-        self.surf = pygame.Surface((25,25))
-        self.surf.fill((150,200,255))
-        self.rect = self.surf.get_rect()
-
-    def gravity(self):
-        if self.rect.top != 550:
-            self.rect.y += 1
-
-    def jump(self):
-        dy = -3
-        accel = 1
-        dy += accel
-        self.isjumping = True
-        if self.isjumping == True:
-            self.rect.y += dy
-            self.isjumping = False
-
-    def update(self, pressed_keys):
-        self.gravity()
-        if pressed_keys[K_UP] or pressed_keys[K_SPACE]:
-            self.jump()
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-1, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(1, 0)
-
-        # Keep player on the screen
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.bottom >= 550:
-            self.rect.bottom = 550  
-
-  
 # Initializing screen and pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -169,21 +169,12 @@ while running:
     for enemy in enemies:
         enemy.update()
         enemy.collision(player.rect.x, player.rect.y)
-
-
-
-    # Collision Detection
-    if player.rect.y >= enemy.y and player.rect.y + 25 <= enemy.y and player.rect.x >= enemy.x and player.rect.x <= enemy.x + 50:
-        enemy.speed = 0
-        loss = True 
-
-
+        if loss == True:
+            print("loss is true")
 
     # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
-
-     
 
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
@@ -208,7 +199,7 @@ while running:
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
 
     # Add the highscore to json
-    def addhs():
+    def addhs(): # should i place this outside of while loop
         users_json = json.dumps(userscores)
         file = open("users.txt", "w")
         file.write(users_json)
@@ -219,9 +210,6 @@ while running:
     if loss == True:
         player.kill()
         screen.fill((0,0,0))
-        for enemy in enemies:
-            enemy.kill()
-    
         # add the new highscore to the userscores json list 
         for enemy in enemies:    
             if enemy.score > userscores[0]:
@@ -252,10 +240,7 @@ while running:
     # draw the player if the game is still running
     if loss == False:
         screen.blit(player.surf,player.rect)
+    
 
     # Load everything
     pygame.display.flip()
-
-# second enemies don't always show up
-# second enemy collision not working 
-# collision detection not always working 
