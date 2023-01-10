@@ -170,7 +170,7 @@ while running:
         enemy.update()
         enemy.collision(player.rect.x, player.rect.y)
         if loss == True:
-            print("loss is true")
+            print("loss is true") # why niot working
 
     # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
