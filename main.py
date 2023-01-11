@@ -172,34 +172,14 @@ while running:
         file.write(users_json)
         file.close()
 
-    # enemies update
+    # enemies update and lost 
     for enemy in enemies:
         enemy.update()
         enemy.collision(player.rect.x, player.rect.y)
         if enemy.loss == True:
-            print("loss is true") # why niot working
-            player.kill()
-            screen.fill((0,0,0))
-            # add the new highscore to the userscores json list 
-            for enemy in enemies:    
-                if enemy.score > userscores[0]:
-                    del(userscores[0])
-                    userscores.append(enemy.score)
-                # save the userscores file
-            addhs()
-            screen.blit(text1,text1Rect)
-            screen.blit(text2,text2Rect)
+            drawendscreen()
+            print("loss is true") # why not working
 
-            # print the highscore to the screen    
-            text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
-            text3Rect = text3.get_rect()
-            text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
-            screen.blit(text3,text3Rect)
-            # Instructions to restart or reset game
-            text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
-            text4Rect = text4.get_rect()
-            text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
-            screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
     # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
@@ -229,29 +209,29 @@ while running:
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
 
     # the ending screen ******************************
-    # if loss == True:
-    #     player.kill()
-    #     screen.fill((0,0,0))
-    #     # add the new highscore to the userscores json list 
-    #     for enemy in enemies:    
-    #         if enemy.score > userscores[0]:
-    #             del(userscores[0])
-    #             userscores.append(enemy.score)
-    #         # save the userscores file
-    #     addhs()
-    #     screen.blit(text1,text1Rect)
-    #     screen.blit(text2,text2Rect)
+    def drawendscreen():
+        player.kill()
+        screen.fill((0,0,0))
+        # add the new highscore to the userscores json list 
+        for enemy in enemies:    
+            if enemy.score > userscores[0]:
+                del(userscores[0])
+                userscores.append(enemy.score)
+            # save the userscores file
+        addhs()
+        screen.blit(text1,text1Rect)
+        screen.blit(text2,text2Rect)
 
-    #     # print the highscore to the screen    
-    #     text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
-    #     text3Rect = text3.get_rect()
-    #     text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
-    #     screen.blit(text3,text3Rect)
-    #     # Instructions to restart or reset game
-    #     text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
-    #     text4Rect = text4.get_rect()
-    #     text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
-    #     screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
+        # print the highscore to the screen    
+        text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
+        text3Rect = text3.get_rect()
+        text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
+        screen.blit(text3,text3Rect)
+        # Instructions to restart or reset game
+        text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
+        text4Rect = text4.get_rect()
+        text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
+        screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
     # draw the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
@@ -260,8 +240,9 @@ while running:
 
         
     # draw the player if the game is still running
-    if loss == False:
-        screen.blit(player.surf,player.rect)
+    for enemy in enemies:
+        if enemy.loss == False:
+            screen.blit(player.surf,player.rect)
     
 
     # Load everything
