@@ -190,7 +190,12 @@ while running:
 
     # DRAWING
     # Fill the screen with black
-    screen.fill((70,70,70)) 
+    for enemy in enemies:
+        if enemy.loss == False:
+            screen.fill((70,70,70)) 
+            # the ground
+            pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
+    
 
     # End Game Screen
     text1 = font.render("YOU LOST", True, (255,51,51))
@@ -205,8 +210,7 @@ while running:
 
         pygame.display.set_caption(str(enemy.score))
 
-    # the ground
-    pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
+
 
     # the ending screen ******************************
     def drawendscreen():
