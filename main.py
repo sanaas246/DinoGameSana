@@ -86,6 +86,7 @@ class Enemy(pygame.sprite.Sprite):
         self.color = (100, 100, 100)
         self.speed = -0.06
         self.score = 0
+        self.loss = False
 
     def update(self):
         self.x += self.speed
@@ -115,9 +116,8 @@ class Enemy(pygame.sprite.Sprite):
         if yval >= self.y and yval <= self.y + 100 and xval >= self.x and xval <= self.x + 50:
             enemy.speed = 0
             print("loss")
-            self.kill()     
-            loss = True 
-
+            self.kill() 
+            self.loss = True    
 
 # Initializing screen and pygame
 pygame.init()
@@ -164,13 +164,42 @@ while running:
                 new_enemy = Enemy()
                 enemies.add(new_enemy)
                 all_sprites.add(new_enemy)
+    
+    # Add the highscore to json
+    def addhs(): # should i place this outside of while loop
+        users_json = json.dumps(userscores)
+        file = open("users.txt", "w")
+        file.write(users_json)
+        file.close()
 
     # enemies update
     for enemy in enemies:
         enemy.update()
         enemy.collision(player.rect.x, player.rect.y)
-        if loss == True:
+        if enemy.loss == True:
             print("loss is true") # why niot working
+            player.kill()
+            screen.fill((0,0,0))
+            # add the new highscore to the userscores json list 
+            for enemy in enemies:    
+                if enemy.score > userscores[0]:
+                    del(userscores[0])
+                    userscores.append(enemy.score)
+                # save the userscores file
+            addhs()
+            screen.blit(text1,text1Rect)
+            screen.blit(text2,text2Rect)
+
+            # print the highscore to the screen    
+            text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
+            text3Rect = text3.get_rect()
+            text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
+            screen.blit(text3,text3Rect)
+            # Instructions to restart or reset game
+            text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
+            text4Rect = text4.get_rect()
+            text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
+            screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
     # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
@@ -188,6 +217,7 @@ while running:
     text1Rect = text1.get_rect()
     text1Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2) - 50)
 
+    # Draw Score
     for enemy in enemies:
         text2 = font.render(f"Score: {enemy.score}", True, (0,245,50)) 
         text2Rect = text2.get_rect()
@@ -198,38 +228,30 @@ while running:
     # the ground
     pygame.draw.rect(screen, [100, 100, 100], [0, 550, 800, 100],0)
 
-    # Add the highscore to json
-    def addhs(): # should i place this outside of while loop
-        users_json = json.dumps(userscores)
-        file = open("users.txt", "w")
-        file.write(users_json)
-        file.close()
+    # the ending screen ******************************
+    # if loss == True:
+    #     player.kill()
+    #     screen.fill((0,0,0))
+    #     # add the new highscore to the userscores json list 
+    #     for enemy in enemies:    
+    #         if enemy.score > userscores[0]:
+    #             del(userscores[0])
+    #             userscores.append(enemy.score)
+    #         # save the userscores file
+    #     addhs()
+    #     screen.blit(text1,text1Rect)
+    #     screen.blit(text2,text2Rect)
 
-    # USER LOSES
-    # the ending screen
-    if loss == True:
-        player.kill()
-        screen.fill((0,0,0))
-        # add the new highscore to the userscores json list 
-        for enemy in enemies:    
-            if enemy.score > userscores[0]:
-                del(userscores[0])
-                userscores.append(enemy.score)
-            # save the userscores file
-        addhs()
-        screen.blit(text1,text1Rect)
-        screen.blit(text2,text2Rect)
-
-        # print the highscore to the screen    
-        text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
-        text3Rect = text3.get_rect()
-        text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
-        screen.blit(text3,text3Rect)
-        # Instructions to restart or reset game
-        text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
-        text4Rect = text4.get_rect()
-        text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
-        screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
+    #     # print the highscore to the screen    
+    #     text3 = font.render(f"High Score: {userscores[0]}", True, (255,204,229)) 
+    #     text3Rect = text3.get_rect()
+    #     text3Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+ 50)
+    #     screen.blit(text3,text3Rect)
+    #     # Instructions to restart or reset game
+    #     text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
+    #     text4Rect = text4.get_rect()
+    #     text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
+    #     screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
 
     # draw the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
