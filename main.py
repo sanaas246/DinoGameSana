@@ -111,7 +111,7 @@ class Enemy(pygame.sprite.Sprite):
             self.score += 1
             print(self.score)
 
-    def collision(self, xval, yval): # doesn't work
+    def collision(self, xval, yval): 
         # Collision Detection
         if yval >= self.y and yval <= self.y + 100 and xval >= self.x and xval <= self.x + 50:
             enemy.speed = 0
@@ -166,7 +166,7 @@ while running:
                 all_sprites.add(new_enemy)
     
     # Add the highscore to json
-    def addhs(): # should i place this outside of while loop
+    def addhs(): 
         users_json = json.dumps(userscores)
         file = open("users.txt", "w")
         file.write(users_json)
@@ -178,8 +178,6 @@ while running:
         enemy.collision(player.rect.x, player.rect.y)
         if enemy.loss == True:
             drawendscreen()
-            print("loss is true") # why not working
-
 
     # Pressing keys to move player
     pressed_keys = pygame.key.get_pressed()
@@ -210,9 +208,7 @@ while running:
 
         pygame.display.set_caption(str(enemy.score))
 
-
-
-    # the ending screen ******************************
+    # the ending screen 
     def drawendscreen():
         player.kill()
         screen.fill((0,0,0))
@@ -235,7 +231,7 @@ while running:
         text4 = font.render(f"To restart, press R. To quit, press ESC", True, (198,1,1)) 
         text4Rect = text4.get_rect()
         text4Rect.center = (SCREEN_WIDTH // 2, (SCREEN_HEIGHT // 2)+150)
-        screen.blit(text4,text4Rect) # ADD RESTART FUNCTION 
+        screen.blit(text4,text4Rect) 
 
     # draw the enemy
     pygame.draw.rect(screen, [30, 30, 30], [x1, 350, 50, 50], 0)
