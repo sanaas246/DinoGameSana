@@ -102,11 +102,8 @@ class Enemy(pygame.sprite.Sprite):
         self.speed -= random.uniform(0,1)
         if self.speed <= -0.8:
             self.speed = -0.05
-            if self.score == 1:
-                print("score hit 2")
-                # enemies.add(Enemy()) 
         print(self.speed)
-        if self.x != 1: # speed never adds up to 1
+        if self.x != 1:
             print("scoring works")
             self.score += 1
             print(self.score)
@@ -243,7 +240,6 @@ while running:
     for enemy in enemies:
         if enemy.loss == False:
             screen.blit(player.surf,player.rect)
-    
 
     # Load everything
     pygame.display.flip()
