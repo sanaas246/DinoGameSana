@@ -42,10 +42,12 @@ class Player(pygame.sprite.Sprite):
         self.surf.fill((150,200,255))
         self.rect = self.surf.get_rect()
 
+    # the player will fall to the ground
     def gravity(self):
         if self.rect.top != 550:
             self.rect.y += 1
 
+    # the player will jump and then gravity will the player down
     def jump(self):
         dy = -3
         accel = 1
@@ -55,6 +57,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y += dy
             self.isjumping = False
 
+    # the arrow use
     def update(self, pressed_keys):
         self.gravity()
         if pressed_keys[K_UP] or pressed_keys[K_SPACE]:
@@ -63,8 +66,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.move_ip(-1, 0)
         if pressed_keys[K_RIGHT]:
             self.rect.move_ip(1, 0)
-
-
         # Keep player on the screen
         if self.rect.left < 0:
             self.rect.left = 0
@@ -88,14 +89,17 @@ class Enemy(pygame.sprite.Sprite):
         self.score = 0
         self.loss = False
 
+    # Update the location
     def update(self):
         self.x += self.speed
         if self.x <= -50:
             self.teleport()
-        
+    
+    # Draw the enemy
     def draw(self): # draw multiple rects
         pygame.draw.rect(screen, self.color, [self.x, self.y, self.w, self.h], 0)
         
+    # Speed of enemy and how it moves
     def teleport(self):
         self.x = 800
         self.y = random.randint(100, 450)
@@ -108,6 +112,7 @@ class Enemy(pygame.sprite.Sprite):
             self.score += 1
             print(self.score)
 
+    # Collision Detection
     def collision(self, xval, yval): 
         # Collision Detection
         if yval >= self.y and yval <= self.y + 100 and xval >= self.x and xval <= self.x + 50:
