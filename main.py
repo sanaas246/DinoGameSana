@@ -5,9 +5,9 @@ import pygame
 import random
 import json 
 
+# Import locals (according to tutorial)
 from pygame.locals import (
     K_UP,
-    K_DOWN,
     K_LEFT,
     K_RIGHT,
     K_SPACE,
@@ -37,6 +37,7 @@ userscores = json.loads(user_from_file)
 # Player Sprite
 class Player(pygame.sprite.Sprite):
     def __init__(self):
+        # Player Spawn (According to tutorial)
         super(Player, self).__init__()
         self.surf = pygame.Surface((25,25))
         self.surf.fill((150,200,255))
